@@ -1,4 +1,4 @@
-package com.fquesada.apprestaurante
+package com.fquesada.apprestaurante.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
