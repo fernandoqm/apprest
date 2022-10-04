@@ -3,8 +3,10 @@ package com.fquesada.apprestaurante.ui
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -25,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusOrder
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,20 +42,31 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.fquesada.apprestaurante.ui.theme.ApprestauranteTheme
 import com.fquesada.apprestaurante.R
 import com.fquesada.apprestaurante.ui.theme.DeepBlue
 import com.fquesada.apprestaurante.ui.theme.Shapes
+import com.fquesada.apprestaurante.util.navigation.NavGraph
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import java.time.format.TextStyle
 
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var navHostController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -60,17 +74,13 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = DeepBlue
+                    color = MaterialTheme.colors.background
                 ) {
-                    Login(getVideoUri())
+                    navHostController = rememberNavController()
+                    NavGraph(navController = navHostController)
                 }
             }
         }
     }
-
-    private fun getVideoUri(): Uri {
-        val rawId = resources.getIdentifier("fondologin","raw",packageName)
-        val videoUri = "android.resource://$packageName/$rawId"
-        return Uri.parse(videoUri)
-    }
 }
+
